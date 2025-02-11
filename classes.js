@@ -11,4 +11,9 @@ class Sprite {
     ctx.closePath();
     ctx.fill();
   }
+
+  update(){
+    this.draw();
+    if (this.position.y < canvas.height - 20) this.position.y += 10;
+  }
 }

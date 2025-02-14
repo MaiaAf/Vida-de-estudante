@@ -15,13 +15,12 @@ jogador.draw();
 ansiedade1.draw();
 console.log(jogador);
 
-
-function animar() {
-  window.requestAnimationFrame(animar)
-  ctx.clearRect(0,0,canvas.width,canvas.height)
+function loop() {
+  window.requestAnimationFrame(loop);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   desenharCenario();
   jogador.update();
   ansiedade1.update();
 }
 
-animar();
+loop();

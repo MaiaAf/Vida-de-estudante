@@ -15,10 +15,15 @@ function desenharCenario() {
 const jogador = new Sprite({ x: 10, y: 10 }, "Navy");
 
 const ansiedade1 = new Sprite({ x: 50, y: 50 }, "red");
+const personagemImg = new Image();
 
+personagemImg.src = "./img/estudante.webp";
+
+const pers = new ImagemAnimada({ x: 100, y: 10 }, personagemImg);
 jogador.draw();
 ansiedade1.draw();
-console.log(jogador);
+pers.draw();
+
 
 function loop() {
   window.requestAnimationFrame(loop);
@@ -32,6 +37,7 @@ function loop() {
   desenharCenario();
   jogador.update();
   ansiedade1.update();
+  pers.update();
 }
 
 loop();

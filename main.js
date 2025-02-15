@@ -1,6 +1,11 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+var agora;
+var passado = Date.now();
+var fps = 60
+var intervalo_ms = 1000/fps;
+var delta;
 
 function desenharCenario() {
   ctx.fillStyle = "DarkGreen";
@@ -17,6 +22,12 @@ console.log(jogador);
 
 function loop() {
   window.requestAnimationFrame(loop);
+
+  agora = Date.now();
+  delta = agora - passado;
+
+  if (delta < intervalo_ms) return;
+  passado = agora - (delta % intervalo_ms);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   desenharCenario();
   jogador.update();

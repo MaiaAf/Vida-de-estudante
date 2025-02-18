@@ -70,6 +70,17 @@ function loop() {
   jogador.update();
   ansiedade1.update();
   pers.update();
+  pers.velocity.x = 0
+  pers.estado = 0;
+  if(keys.d.pressed){
+    pers.velocity.x = 1
+    pers.estado = 1
+  } else if (keys.a.pressed){
+    pers.velocity.x = -1
+  }
+
 }
 
 loop();
+
+

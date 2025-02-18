@@ -23,7 +23,7 @@ class ImagemAnimada extends Sprite{
     super(pos);
     this.imagem = new Image();
     this.imagem.src = imagem;
-    
+    this.velocity = {x:0, y:0}
     this.coluna = 0;
     this.linha = 0;
     this.estado = 1; // 0 - Parado, 1 - andando - 2 - pulando
@@ -76,6 +76,8 @@ class ImagemAnimada extends Sprite{
         if (this.quadro_atual != this.frame_duracao) break;
         this.coluna = this.frame % 2
         break;
+
+      
       }
 
       this.frame++;
@@ -84,12 +86,13 @@ class ImagemAnimada extends Sprite{
 
   update() {
     this.draw();
+
+    this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;
+
     if (this.position.y < canvas.height - 26) {
-      this.position.y += 3;
+      this.position.y += .5;
       this.estado = 2;
-    } else {
-      this.position.x += 0.5;
-      this.estado = 1;
     }
   }
 }

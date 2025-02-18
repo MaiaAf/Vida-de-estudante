@@ -22,20 +22,28 @@ const mapa1 = [
   [0,0,0,0,0,0,0,0,0,0,4,5,6,0,0,0,],
   [0,4,5,5,6,0,0,0,0,0,0,0,0,0,0,0,],
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,1,2,2,2,2,3,0,0,1,2,2,2,2,2,3,],
+  [0,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+  [0,8,10,2,2,2,3,0,0,1,2,2,2,2,2,3,],
 ]
 
-
+var colisoes = []
+var camera = {x:0, y: 0}
 function desenharCenario() {
-  for (let i = 0; i < LARGURA_JOGO / TILE_TAMANHO; i++) {
-    for (let j = 0; j <  ALTURA_JOGO / TILE_TAMANHO; j++) {
-      if (mapa1[j][i] == 0) continue;
+  for (let i = camera.x; i < Math.round(camera.x + LARGURA_JOGO) / TILE_TAMANHO; i++) {
+    for (let j = camera.y; j <  Math.round(camera.y + ALTURA_JOGO) / TILE_TAMANHO; j++) {
+      let tile_atual =mapa1[j][i];
+
+      if (tile_atual == 0) {
+        continue;
+      } else {
+
+          colisoes.push({x: i * 16,y: j * 16})
+        };
 
       ctx.drawImage(
         tileset, // imagem
-        16 * (mapa1[j][i] - 1),
-        0, // Posição x e y do início do recorte
+        16 * ((tile_atual-1) % 7),
+        16 * Math.floor(tile_atual / 7), // Posição x e y do início do recorte
         16,
         16, // tamanho x e y do recorte
         i * 16,
@@ -43,6 +51,8 @@ function desenharCenario() {
         16,
         16,
     );
+
+
     }
   }
 }

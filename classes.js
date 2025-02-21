@@ -84,18 +84,45 @@ class ImagemAnimada extends Sprite{
       this.quadro_atual++;
   }
 
+  colidir(){
+    colisoes.forEach(element => {
+      ctx.fillRect(element.x, element.y, 3,3)
+      if (this.position.x + TILE_TAMANHO > element.x && 
+          this.position.x < element.x + TILE_TAMANHO && 
+          this.position.y + TILE_TAMANHO > element.y && 
+          this.position.y < element.y + TILE_TAMANHO) {
+            
+        if (this.position.x < element.x + TILE_TAMANHO / 2) {
+          this.velocity.x = 0; // Colisão na esquerda
+        } else {
+          this.velocity.x = 1; // Colisão na direita
+        }
+  
+        if (this.position.y < element.y + TILE_TAMANHO / 2) {
+          this.velocity.y = 0; // Colisão em cima
+        } else {
+          this.velocity.y = 1; // Colisão em baixo
+        }
+      }
+    });
+  }
+  
   update() {
     this.draw();
 
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
-
-    if (this.position.y < canvas.height - 26) {
-      this.position.y += .5;
+    
+    // if (this.position.y < canvas.height - 26) {
+      this.velocity.y = 1;
       this.estado = 2;
-    }
+    // } else {this.velocity.y = 0}
+    this.colidir()
+
   }
 }
+
+
 class Camera {
   constructor(pos = {x: 0, y: 0}) {
     this.pos = pos;
@@ -113,5 +140,8 @@ class Camera {
     this.pos.y = Math.max(0, Math.min(this.pos.y, mapa1Altura * TILE_TAMANHO - ALTURA_JOGO))
 
     // ctx.fillRect(this.pos.x, this.pos.y,LARGURA_JOGO,ALTURA_JOGO)
+    console.log("player", playerPosition)
+    console.log("Camera:", this.pos);
+    // const margem = 64
   }
 }

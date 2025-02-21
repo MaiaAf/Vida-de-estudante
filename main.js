@@ -16,28 +16,41 @@ var intervalo_ms = 1000/fps;
 var delta;
 
 const mapa1 = [
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,4,5,6,0,0,0,],
-  [0,4,5,5,6,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-  [0,8,10,2,2,2,3,0,0,1,2,2,2,2,2,3,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,4,5,6,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,],
+  [0,4,5,5,6,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,],
+  [0,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,],
+  [0,8,10,2,2,2,3,0,0,1,2,2,2,2,2,3, 1,2,3,4,5,6,7,8,0,0,  1,2,3,4,5,6,7,8,0,0,],
+  [0,8,10,2,2,2,3,0,0,1,2,2,2,2,2,3, 1,2,3,4,5,6,7,8,0,8,  1,2,3,4,5,6,7,8,0,8,],
+  [0,8,10,2,2,2,3,0,0,1,2,2,2,2,2,3, 1,2,3,4,5,6,7,8,0,0,  1,2,3,4,5,6,7,8,0,0,],
+  [0,8,10,2,2,2,3,0,0,1,2,2,2,2,2,3, 1,2,3,4,5,6,7,8,0,0,  1,2,3,4,5,6,7,8,0,0,],
+  [0,8,10,2,2,2,3,0,0,1,2,2,2,2,2,3, 1,2,3,4,5,6,7,8,6,8,  1,2,3,4,5,6,7,8,6,8,],
 ]
+const mapa1Largura = mapa1[0].length;
+const mapa1Altura = mapa1.length;
 
 var colisoes = []
-var camera = {x:0, y: 0}
+const camera = new Camera({x: 0, y: 0});
+
 function desenharCenario() {
-  for (let i = camera.x; i < Math.round(camera.x + LARGURA_JOGO) / TILE_TAMANHO; i++) {
-    for (let j = camera.y; j <  Math.round(camera.y + ALTURA_JOGO) / TILE_TAMANHO; j++) {
+  const tileX = Math.floor(camera.pos.x / TILE_TAMANHO);
+  const tileY = Math.floor(camera.pos.y / TILE_TAMANHO);
+
+  for (let i = tileX; i < Math.floor(camera.pos.x + LARGURA_JOGO) / TILE_TAMANHO + 1; i++) {
+    for (let j = tileY; j <  Math.floor(camera.pos.y + ALTURA_JOGO) / TILE_TAMANHO + 1; j++) {
+      if (i < 0 || j < 0 || i >= mapa1[0].length || j >= mapa1.length) {
+        continue;
+      }
       let tile_atual =mapa1[j][i];
 
       if (tile_atual == 0) {
         continue;
       } else {
 
-          colisoes.push({x: i * 16,y: j * 16})
+          colisoes.push({x: i * TILE_TAMANHO - camera.pos.x,y: j * TILE_TAMANHO - camera.pos.y})
         };
 
       ctx.drawImage(
@@ -46,13 +59,11 @@ function desenharCenario() {
         16 * Math.floor(tile_atual / 7), // Posição x e y do início do recorte
         16,
         16, // tamanho x e y do recorte
-        i * 16,
-        j * 16, // posição da imagem
+        i * TILE_TAMANHO - camera.pos.x,
+        j * TILE_TAMANHO - camera.pos.y, // posição da imagem
         16,
         16,
     );
-
-
     }
   }
 }
@@ -60,7 +71,7 @@ function desenharCenario() {
 
 const ansiedade1 = new Sprite({ x: 50, y: 50 }, "red");
 
-const pers = new ImagemAnimada({ x: 100, y: 10 }, "./img/estudante.webp");
+const pers = new ImagemAnimada({ x: 0, y: 10 }, "./img/estudante.webp");
 
 
 
@@ -76,15 +87,19 @@ function calcularQuadro() {
 
 function loop() {
   window.requestAnimationFrame(loop);
-   if (!calcularQuadro()) return
+  if (!calcularQuadro()) return
+
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpar canvas
 
+  camera.update(pers.position);
   desenharCenario();
-  
+
   ansiedade1.update();
+  // pers.velocity.y = 1
   pers.update();
   pers.velocity.x = 0
   pers.estado = 0;
+  if (pers.velocity.y > 0) pers.estado = 2;
   if(keys.d.pressed){
     pers.velocity.x = 1
     pers.estado = 1
@@ -93,6 +108,7 @@ function loop() {
   }
 
 }
+
 
 loop();
 

@@ -96,3 +96,22 @@ class ImagemAnimada extends Sprite{
     }
   }
 }
+class Camera {
+  constructor(pos = {x: 0, y: 0}) {
+    this.pos = pos;
+  }
+
+  update(playerPosition){
+    const camX = playerPosition.x - (LARGURA_JOGO / 2);
+    const camY = playerPosition.y - (ALTURA_JOGO / 2);
+
+    if (this.pos.x - camX > 64 || this.pos.x - camX < 64) this.pos.x = camX; // Margem no eixo X
+    this.pos.y = camY;
+    
+    // Limitar movimento da câmera ao tamanho do mapa
+    this.pos.x = Math.max(0, Math.min(this.pos.x, mapa1Largura * TILE_TAMANHO - LARGURA_JOGO))
+    this.pos.y = Math.max(0, Math.min(this.pos.y, mapa1Altura * TILE_TAMANHO - ALTURA_JOGO))
+
+    // ctx.fillRect(this.pos.x, this.pos.y,LARGURA_JOGO,ALTURA_JOGO)
+  }
+}

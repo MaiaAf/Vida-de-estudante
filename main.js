@@ -64,16 +64,19 @@ const pers = new ImagemAnimada({ x: 100, y: 10 }, "./img/estudante.webp");
 
 
 
-function loop() {
-  window.requestAnimationFrame(loop);
-
+function calcularQuadro() {
   agora = Date.now();
   delta = agora - passado;
 
-  if (delta < intervalo_ms) return;
+  if (delta < intervalo_ms) return false;
 
   passado = agora - (delta % intervalo_ms);
+  return true
+}
 
+function loop() {
+  window.requestAnimationFrame(loop);
+   if (!calcularQuadro()) return
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpar canvas
 
   desenharCenario();

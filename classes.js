@@ -86,7 +86,7 @@ class ImagemAnimada extends Sprite{
 
   colidir(){
     colisoes.forEach(element => {
-      ctx.fillRect(element.x, element.y, 3,3)
+      // ctx.fillRect(element.x, element.y, 3,3)
       if (this.position.x + TILE_TAMANHO > element.x && 
           this.position.x < element.x + TILE_TAMANHO && 
           this.position.y + TILE_TAMANHO > element.y && 

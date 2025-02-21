@@ -57,7 +57,7 @@ function desenharCenario() {
   }
 }
 
-const jogador = new Sprite({ x: 10, y: 10 }, "Navy");
+
 const ansiedade1 = new Sprite({ x: 50, y: 50 }, "red");
 
 const pers = new ImagemAnimada({ x: 100, y: 10 }, "./img/estudante.webp");
@@ -80,7 +80,7 @@ function loop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpar canvas
 
   desenharCenario();
-  jogador.update();
+  
   ansiedade1.update();
   pers.update();
   pers.velocity.x = 0

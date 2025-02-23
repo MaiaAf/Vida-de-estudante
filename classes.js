@@ -18,9 +18,9 @@ class Sprite {
   }
 }
 
-class ImagemAnimada extends Sprite{
+class ImagemAnimada{
   constructor(pos, imagem) {
-    super(pos);
+    this.position = pos;
     this.posinicial = pos;
     this.imagem = new Image();
     this.imagem.src = imagem;

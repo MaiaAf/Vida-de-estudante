@@ -35,22 +35,33 @@ const mapa1Altura = mapa1.length;
 var colisoes = []
 const camera = new Camera({x: 0, y: 0});
 
-function desenharCenario() {
+function desenharCenario(mapa, colidir = false) {
+  // Define a posição x e y do primeiro tile da tela (superior esquerdo)
   const tileX = Math.floor(camera.pos.x / TILE_TAMANHO);
   const tileY = Math.floor(camera.pos.y / TILE_TAMANHO);
 
+  // Itera sobre o mapa e desenha do primeiro tile até a largura e altura inteiras da tela
   for (let i = tileX; i < Math.floor(camera.pos.x + LARGURA_JOGO) / TILE_TAMANHO + 1; i++) {
     for (let j = tileY; j <  Math.floor(camera.pos.y + ALTURA_JOGO) / TILE_TAMANHO + 1; j++) {
-      if (i < 0 || j < 0 || i >= mapa1[0].length || j >= mapa1.length) {
+      if (i < 0 || j < 0 || i >= mapa[0].length || j >= mapa.length) {
         continue;
       }
-      let tile_atual =mapa1[j][i];
+      let tile_atual = mapa[j][i];
 
+      // Se o tile atual não for 0, envia um objeto de colisão.
       if (tile_atual == 0) {
         continue;
       } else {
+        if (!colidir) continue;
+          let tile_altura = TILE_TAMANHO
+          // Altura das plataformas
+          if ([4,5,6].includes(tile_atual)) tile_altura = 5;
 
-          colisoes.push({x: i * TILE_TAMANHO - camera.pos.x,y: j * TILE_TAMANHO - camera.pos.y})
+          colisoes.push({
+            x: i * TILE_TAMANHO - camera.pos.x,
+            y: j * TILE_TAMANHO - camera.pos.y,
+            altura: tile_altura,
+          })
         };
 
       ctx.drawImage(
@@ -92,7 +103,7 @@ function loop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpar canvas
 
   camera.update(pers.position);
-  desenharCenario();
+  desenharCenario(mapa1, true);
 
   ansiedade1.update();
   // pers.velocity.y = 1

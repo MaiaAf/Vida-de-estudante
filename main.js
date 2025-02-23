@@ -29,7 +29,7 @@ const pers = new Personagem(posinicial, "./img/estudante.webp");
 const ansiedade1 = new Inimigo({ x: 50, y: 50 }, "./img/inimigos.webp");
 const ansiedade2 = new Inimigo({ x: 150, y: 0 }, "./img/inimigos.webp");
 const preguica1 = new Inimigo({ x: 100, y: (mapa1Altura - 8) * 16 }, "./img/inimigos.webp");
-preguica1.linha = 1
+preguica1.linha = 1 
 
 
 // Verifica se já é hora de um novo quadro
@@ -51,6 +51,7 @@ function loop() {
 
   desenharCenario(mapa1, true);
   
+  // Movimento para a direita e esquerda
   pers.velocity.x = 0
 
   if(keys.d.pressed){
@@ -66,7 +67,6 @@ function loop() {
   ansiedade1.update();
   ansiedade2.update();
   preguica1.update();
-  // ansiedade1.atacar();
 
   // Limpa o array de colisões
   colisoes = [];

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vida de estudante</title>
+  </head>
+  <body>
+
+    <style>
+      canvas {
+        border: 1px solid #d3d3d3;
+        background-color: skyblue;
+        /* Jogo pixelado */
+        image-rendering: crisp-edges; /*Se o navegador não tiver pixelated*/
+        image-rendering: pixelated;
+
+        width: 1024px; /*Fazendo upscale do jogo mantendo os pixels*/
+        height: 512px;
+
+        /*Jogo tomando a tela inteira*/
+        display: block;
+        width: 100%;
+        Height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+      }
+    </style>
+    <canvas id="canvas" width="256" height="128"></canvas>
+    <script src="movimento.js"></script>
+    <script src="classes.js"></script>
+    <script src="mapas.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

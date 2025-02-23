@@ -29,6 +29,10 @@ class ImagemAnimada{
     this.estado = 0; // 0 - Parado, 1 - andando - 2 - pulando 3 - andando esquerda
     this.coluna = 0;
     this.linha = 0;
+    this.estado_anterior = 0;
+    this.quadro_atual = 0;
+    this.frame = 0;
+    this.frame_duracao = fps;
 
   }
 
@@ -97,8 +101,6 @@ class ImagemAnimada{
         }
       }
     });
-    // Limpa o array de colisões
-    colisoes = [];
   }
   
   
@@ -123,10 +125,7 @@ class ImagemAnimada{
 class Personagem extends ImagemAnimada {
   constructor(pos,imagem){
     super(pos,imagem);
-    this.estado_anterior = 0;
-    this.quadro_atual = 0;
-    this.frame = 0;
-    this.frame_duracao = fps;
+
     this.anim_frames= {
       idle: [0,0,0,1,1,0,0,0,2,2],
       andar: [0,1,2,3,4,5],
@@ -206,5 +205,50 @@ class Camera {
     console.log("player", playerPosition)
     console.log("Camera:", this.pos);
     // const margem = 64
+  }
+}
+
+
+class Ansiedade extends ImagemAnimada{
+  constructor(pos,imagem){
+    super(pos,imagem);
+
+    this.anim_frames= {
+      idle: [0,0,1,0,0],
+    };
+  }
+
+  animar(){
+    this.frame_duracao = 30; // Duração do quadro em frames por segundo
+    if (this.quadro_atual > this.frame_duracao) this.quadro_atual = 0;
+    if (this.quadro_atual == this.frame_duracao){
+      this.coluna = this.anim_frames.idle[this.frame % this.anim_frames.idle.length];
+      this.velocity.x = this.velocity.x * -1;
+    }
+    
+    this.frame++;
+    this.quadro_atual++;
+  }
+
+  atacar(){
+    const colidiu = pers.posx + TILE_TAMANHO > this.pos.x &&
+    pers.posx < this.pos.x + TILE_TAMANHO &&
+    pers.posy + TILE_TAMANHO > this.pos.y &&
+    pers.posy < this.pos.y + 16;
+  }
+
+  if (colidiu) {
+    pers.morrer()
+  };
+
+  update(){
+    this.velocity.x = 0.1
+    this.draw();
+
+    this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;
+
+    this.velocity.y = 1;
+    this.colidir()
   }
 }

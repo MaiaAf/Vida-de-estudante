@@ -65,9 +65,9 @@ function desenharCenario(mapa, colidir = false) {
 }
 
 
-const ansiedade1 = new Sprite({ x: 50, y: 50 }, "red");
 
 const pers = new Personagem({ x: 64, y: (mapa1Altura - 8) * 16 }, "./img/estudante.webp");
+const ansiedade1 = new Ansiedade({ x: 50, y: 50 }, "./img/inimigos.webp");
 
 
 
@@ -90,7 +90,6 @@ function loop() {
   camera.update(pers.position);
   desenharCenario(mapa1, true);
 
-  ansiedade1.update();
   // pers.velocity.y = 1
   pers.velocity.x = 0
   // pers.estado = 0;
@@ -103,6 +102,10 @@ function loop() {
     pers.estado = 3
   }
   pers.update();
+  ansiedade1.update();
+  // ansiedade1.atacar();
+  // Limpa o array de colisões
+  colisoes = [];
 }
 
 

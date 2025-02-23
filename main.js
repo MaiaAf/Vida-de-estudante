@@ -15,25 +15,10 @@ var fps = 60
 var intervalo_ms = 1000/fps;
 var delta;
 
-const mapa1 = [
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,4,5,6,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,],
-  [0,4,5,5,6,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,],
-  [0,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,],
-  [0,8,10,2,2,2,3,0,0,1,2,2,2,2,2,3, 1,2,3,4,5,6,7,8,0,0,  1,2,3,4,5,6,7,8,0,0,],
-  [0,8,10,2,2,2,3,0,0,1,2,2,2,2,2,3, 1,2,3,4,5,6,7,8,0,8,  1,2,3,4,5,6,7,8,0,8,],
-  [0,8,10,2,2,2,3,0,0,1,2,2,2,2,2,3, 1,2,3,4,5,6,7,8,0,0,  1,2,3,4,5,6,7,8,0,0,],
-  [0,8,10,2,2,2,3,0,0,1,2,2,2,2,2,3, 1,2,3,4,5,6,7,8,0,0,  1,2,3,4,5,6,7,8,0,0,],
-  [0,8,10,2,2,2,3,0,0,1,2,2,2,2,2,3, 1,2,3,4,5,6,7,8,6,8,  1,2,3,4,5,6,7,8,6,8,],
-]
-const mapa1Largura = mapa1[0].length;
-const mapa1Altura = mapa1.length;
+
 
 var colisoes = []
-const camera = new Camera({x: 0, y: 0});
+const camera = new Camera();
 
 function desenharCenario(mapa, colidir = false) {
   // Define a posição x e y do primeiro tile da tela (superior esquerdo)
@@ -82,7 +67,7 @@ function desenharCenario(mapa, colidir = false) {
 
 const ansiedade1 = new Sprite({ x: 50, y: 50 }, "red");
 
-const pers = new ImagemAnimada({ x: 0, y: 10 }, "./img/estudante.webp");
+const pers = new Personagem({ x: 64, y: (mapa1Altura - 8) * 16 }, "./img/estudante.webp");
 
 
 
@@ -107,17 +92,17 @@ function loop() {
 
   ansiedade1.update();
   // pers.velocity.y = 1
-  pers.update();
   pers.velocity.x = 0
-  pers.estado = 0;
-  if (pers.velocity.y > 0) pers.estado = 2;
+  // pers.estado = 0;
+  // if (pers.velocity.y > 0) pers.estado = 2;
   if(keys.d.pressed){
     pers.velocity.x = 1
     pers.estado = 1
   } else if (keys.a.pressed){
     pers.velocity.x = -1
+    pers.estado = 3
   }
-
+  pers.update();
 }
 
 

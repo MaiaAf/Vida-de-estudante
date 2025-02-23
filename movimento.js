@@ -19,7 +19,7 @@ window.addEventListener('keydown', (event) => {
 
         case "W": 
         case "w": 
-            pers.position.y -= 35
+            pers.pular();
         break
     }
 })

@@ -17,7 +17,7 @@
     }
 
      p, ol, li {
-        font-size: 14pt; color: #228B22; background-color: #D6CF84;
+        font-size: 14pt; color: #186718; background-color: #D6CF84;
         text-align: justify;
         padding: 0.5em;
     }
@@ -42,3 +42,10 @@
         color: #98FB98;background-color: #D6CF84;
     }
   
+    #btn {
+        font-weight: bold;
+        background-color: #DF8F7F;
+        padding: 0.5em;
+        border-radius: 5px;
+        transition: all 300ms;
+    }

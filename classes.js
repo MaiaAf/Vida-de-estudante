@@ -21,19 +21,15 @@ class Sprite {
 class ImagemAnimada extends Sprite{
   constructor(pos, imagem) {
     super(pos);
+    this.posinicial = pos;
     this.imagem = new Image();
     this.imagem.src = imagem;
     this.velocity = {x:0, y:0}
+    this.pulando = false;
+    this.estado = 0; // 0 - Parado, 1 - andando - 2 - pulando 3 - andando esquerda
     this.coluna = 0;
     this.linha = 0;
-    this.estado = 1; // 0 - Parado, 1 - andando - 2 - pulando
-    this.quadro_atual = 0;
-    this.frame = 0;
-    this.frame_duracao = fps;
-    this.anim_frames= {
-      idle: [0,0,0,1,1,0,0,0,2,2],
-      andar: [0,1,2,3,4,5],
-    };
+
   }
 
   draw() {
@@ -44,17 +40,116 @@ class ImagemAnimada extends Sprite{
       16 * this.linha,
       16,
       16, // tamanho x e y do recorte
-      this.position.x,
-      this.position.y, // posição da imagem
+      this.position.x - camera.pos.x,
+      this.position.y - camera.pos.y, // posição da imagem
       16,
       16,
     );
   }
 
+
+  
+  colidir() {
+    colisoes.forEach(element => {
+      // Mostrar colisão do mundo
+      // ctx.fillStyle = '#f006';
+      // ctx.fillRect(element.x, element.y, TILE_TAMANHO, element.altura);
+      
+      
+      // Verifica se há colisão
+      let posx = this.position.x - camera.pos.x;
+      let posy = this.position.y - camera.pos.y;
+      // Mostrar colisão do personagem
+      // ctx.fillStyle = '#0f06';
+
+      // ctx.fillRect(posx, posy, TILE_TAMANHO, TILE_TAMANHO); // Corrigido para usar TILE_TAMANHO para altura
+      const colidiu = posx + TILE_TAMANHO > element.x &&
+                      posx < element.x + TILE_TAMANHO &&
+                      posy + TILE_TAMANHO > element.y &&
+                      posy < element.y + element.altura;
+  
+      if (colidiu) {
+        // Colisão na esquerda
+        const distEsquerda = (posx + TILE_TAMANHO) - element.x;
+        // Colisão na direita
+        const distDireita = (element.x + TILE_TAMANHO) - posx;
+        // Colisão em cima
+        const distCima = (posy + TILE_TAMANHO) - element.y;
+        // Colisão em baixo
+        const distBaixo = (element.y + element.altura) - posy;
+  
+        // Determina a menor distância para ajustar a posição
+        const menorDistancia = Math.min(distEsquerda, distDireita, distCima, distBaixo);
+  
+        if (menorDistancia === distEsquerda) {
+          this.position.x = element.x - TILE_TAMANHO + camera.pos.x; // Ajusta para a esquerda
+          this.velocity.x = 0;
+        } else if (menorDistancia === distDireita) {
+          this.position.x = element.x + TILE_TAMANHO + camera.pos.x; // Ajusta para a direita
+          this.velocity.x = 0;
+        } else if (menorDistancia === distCima) {
+          this.position.y = element.y - TILE_TAMANHO + camera.pos.y; // Ajusta para cima
+          this.velocity.y = 0;
+          this.pulando = false;
+        } else if (menorDistancia === distBaixo) {
+          this.position.y = element.y + element.altura + camera.pos.y; // Ajusta para baixo
+          this.velocity.y = 0;
+        }
+      }
+    });
+    // Limpa o array de colisões
+    colisoes = [];
+  }
+  
+  
+  
+  update() {
+    if (this.velocity.x == 0) {
+      this.estado = 0;
+    }
+    if (this.pulando) {
+      this.estado = 2;
+    }
+    this.draw();
+
+    this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;
+
+    // gravidade
+    // this.velocity.y += 2;
+    // if (this.position.y < canvas.height - 26) {
+    this.velocity.y = 1;
+      // this.estado = 2;
+    // } else {this.velocity.y = 0}
+    this.colidir()
+  }
+}
+
+class Personagem extends ImagemAnimada {
+  constructor(pos,imagem){
+    super(pos,imagem);
+    this.estado_anterior = 0;
+    this.quadro_atual = 0;
+    this.frame = 0;
+    this.frame_duracao = fps;
+    this.anim_frames= {
+      idle: [0,0,0,1,1,0,0,0,2,2],
+      andar: [0,1,2,3,4,5],
+    };
+  }
+
+  pular(){
+    if (this.pulando) return;
+    this.pulando = true;
+    this.velocity.y -= 50;
+}
   animar(){
     this.linha = this.estado;
     if (this.quadro_atual > this.frame_duracao) this.quadro_atual = 0;
-
+    if ( this.estado != this.estado_anterior){
+      this.estado_anterior = this.estado
+      this.frame = 0;
+    }
     switch (this.estado) {
       case 0:
         this.frame_duracao = 60; // Duração do quadro em frames por segundo
@@ -69,56 +164,28 @@ class ImagemAnimada extends Sprite{
 
         this.coluna = this.anim_frames.andar[this.frame % this.anim_frames.andar.length];
 
-
         break;
+
       case 2:
         this.frame_duracao = 12;
         if (this.quadro_atual != this.frame_duracao) break;
         this.coluna = this.frame % 2
         break;
 
-      
+        case 3:
+          this.frame_duracao = 6;
+          if (this.quadro_atual != this.frame_duracao) break;
+  
+          this.coluna = this.anim_frames.andar[this.frame % this.anim_frames.andar.length];
+          break;
       }
-
+      
       this.frame++;
       this.quadro_atual++;
   }
 
-  colidir(){
-    colisoes.forEach(element => {
-      // ctx.fillRect(element.x, element.y, 3,3)
-      if (this.position.x + TILE_TAMANHO > element.x && 
-          this.position.x < element.x + TILE_TAMANHO && 
-          this.position.y + TILE_TAMANHO > element.y && 
-          this.position.y < element.y + TILE_TAMANHO) {
-            
-        if (this.position.x < element.x + TILE_TAMANHO / 2) {
-          this.velocity.x = 0; // Colisão na esquerda
-        } else {
-          this.velocity.x = 1; // Colisão na direita
-        }
-  
-        if (this.position.y < element.y + TILE_TAMANHO / 2) {
-          this.velocity.y = 0; // Colisão em cima
-        } else {
-          this.velocity.y = 1; // Colisão em baixo
-        }
-      }
-    });
-  }
-  
-  update() {
-    this.draw();
-
-    this.position.x += this.velocity.x;
-    this.position.y += this.velocity.y;
-    
-    // if (this.position.y < canvas.height - 26) {
-      this.velocity.y = 1;
-      this.estado = 2;
-    // } else {this.velocity.y = 0}
-    this.colidir()
-
+  morrer(){
+    this.position = posinicial;
   }
 }
 
@@ -133,6 +200,7 @@ class Camera {
     const camY = playerPosition.y - (ALTURA_JOGO / 2);
 
     if (this.pos.x - camX > 64 || this.pos.x - camX < 64) this.pos.x = camX; // Margem no eixo X
+    this.pos.x = camX;
     this.pos.y = camY;
     
     // Limitar movimento da câmera ao tamanho do mapa

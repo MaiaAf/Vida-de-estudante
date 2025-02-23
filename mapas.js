@@ -71,3 +71,15 @@ function desenharCenario(mapa, colidir = false) {
     }
   }
 }
+
+function contato(obj1,obj2) {
+  let posx = obj1.position.x ;
+  let posy = obj1.position.y;
+
+  const colidiu = posx + TILE_TAMANHO > obj2.position.x &&
+  posx < obj2.position.x + TILE_TAMANHO &&
+  posy + TILE_TAMANHO > obj2.position.y &&
+  posy < obj2.position.y + 16;
+
+  return colidiu;
+}

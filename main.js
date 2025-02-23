@@ -18,56 +18,11 @@ var fps = 60
 var intervalo_ms = 1000/fps;
 var delta;
 
-
-
+// Array que guarda a posição das colisões, referentes a um bloco de 16x16 no mapa
 var colisoes = []
+
+// Instanciar objetos
 const camera = new Camera();
-
-function desenharCenario(mapa, colidir = false) {
-  // Define a posição x e y do primeiro tile da tela (superior esquerdo)
-  const tileX = Math.floor(camera.pos.x / TILE_TAMANHO);
-  const tileY = Math.floor(camera.pos.y / TILE_TAMANHO);
-
-  // Itera sobre o mapa e desenha do primeiro tile até a largura e altura inteiras da tela
-  for (let i = tileX; i < Math.floor(camera.pos.x + LARGURA_JOGO) / TILE_TAMANHO + 1; i++) {
-    for (let j = tileY; j <  Math.floor(camera.pos.y + ALTURA_JOGO) / TILE_TAMANHO + 1; j++) {
-      if (i < 0 || j < 0 || i >= mapa[0].length || j >= mapa.length) {
-        continue;
-      }
-      let tile_atual = mapa[j][i];
-
-      // Se o tile atual não for 0, envia um objeto de colisão.
-      if (tile_atual == 0) {
-        continue;
-      } else {
-        if (!colidir) continue;
-          let tile_altura = TILE_TAMANHO
-          // Altura das plataformas
-          if ([4,5,6].includes(tile_atual)) tile_altura = 5;
-
-          colisoes.push({
-            x: i * TILE_TAMANHO - camera.pos.x,
-            y: j * TILE_TAMANHO - camera.pos.y,
-            altura: tile_altura,
-          })
-        };
-
-      ctx.drawImage(
-        tileset, // imagem
-        16 * ((tile_atual-1) % 7),
-        16 * Math.floor(tile_atual / 7), // Posição x e y do início do recorte
-        16,
-        16, // tamanho x e y do recorte
-        i * TILE_TAMANHO - camera.pos.x,
-        j * TILE_TAMANHO - camera.pos.y, // posição da imagem
-        16,
-        16,
-    );
-    }
-  }
-}
-
-
 
 const pers = new Personagem({ x: 64, y: (mapa1Altura - 8) * 16 }, "./img/estudante.webp");
 const ansiedade1 = new Ansiedade({ x: 50, y: 50 }, "./img/inimigos.webp");

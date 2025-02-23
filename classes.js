@@ -1,7 +1,6 @@
 class ImagemAnimada{
   constructor(pos, imagem) {
     this.position = pos;
-    this.posinicial = pos;
     this.imagem = new Image();
     this.imagem.src = imagem;
     this.velocity = {x:0, y:0}
@@ -108,7 +107,6 @@ class ImagemAnimada{
 class Personagem extends ImagemAnimada {
   constructor(pos,imagem){
     super(pos,imagem);
-
     this.anim_frames= {
       idle: [0,0,0,1,1,0,0,0,2,2],
       andar: [0,1,2,3,4,5],
@@ -162,7 +160,10 @@ class Personagem extends ImagemAnimada {
   }
 
   morrer(){
-    this.position = posinicial;
+    this.position.x = posinicial.x - camera.pos.x;
+    this.position.x = posinicial.y - camera.pos.y;
+    // this.velocity.x -= 20
+    console.log("morri")
   }
 }
 
@@ -184,15 +185,11 @@ class Camera {
     this.pos.x = Math.max(0, Math.min(this.pos.x, mapa1Largura * TILE_TAMANHO - LARGURA_JOGO))
     this.pos.y = Math.max(0, Math.min(this.pos.y, mapa1Altura * TILE_TAMANHO - ALTURA_JOGO))
 
-    // ctx.fillRect(this.pos.x, this.pos.y,LARGURA_JOGO,ALTURA_JOGO)
-    console.log("player", playerPosition)
-    console.log("Camera:", this.pos);
-    // const margem = 64
   }
 }
 
 
-class Ansiedade extends ImagemAnimada{
+class Inimigo extends ImagemAnimada{
   constructor(pos,imagem){
     super(pos,imagem);
 
@@ -233,5 +230,9 @@ class Ansiedade extends ImagemAnimada{
 
     this.velocity.y = 1;
     this.colidir()
+
+    if (contato(this, pers)) {
+      pers.morrer();
+    }
   }
 }

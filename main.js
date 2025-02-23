@@ -1,14 +1,17 @@
+// Definir canvas e context
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+// Manter pixels afiados, sem borrar
 ctx.imageSmoothingEnabled = false;
 
-
+// Largura real do jogo, antes de ser redimensionada
 const LARGURA_JOGO = 256;
 const ALTURA_JOGO = 128;
 const TILE_TAMANHO = 16;
 const tileset = new Image();
 tileset.src = "./img/mundo_tiles.webp"
 
+// Variáveis de tempo para calcular os quadros
 var agora;
 var passado = Date.now();
 var fps = 60
@@ -70,7 +73,7 @@ const pers = new Personagem({ x: 64, y: (mapa1Altura - 8) * 16 }, "./img/estudan
 const ansiedade1 = new Ansiedade({ x: 50, y: 50 }, "./img/inimigos.webp");
 
 
-
+// Verifica se já é hora de um novo quadro
 function calcularQuadro() {
   agora = Date.now();
   delta = agora - passado;
@@ -90,10 +93,8 @@ function loop() {
   camera.update(pers.position);
   desenharCenario(mapa1, true);
 
-  // pers.velocity.y = 1
   pers.velocity.x = 0
-  // pers.estado = 0;
-  // if (pers.velocity.y > 0) pers.estado = 2;
+
   if(keys.d.pressed){
     pers.velocity.x = 1
     pers.estado = 1
@@ -101,9 +102,11 @@ function loop() {
     pers.velocity.x = -1
     pers.estado = 3
   }
+
   pers.update();
   ansiedade1.update();
   // ansiedade1.atacar();
+
   // Limpa o array de colisões
   colisoes = [];
 }

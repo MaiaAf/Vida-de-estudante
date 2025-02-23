@@ -97,7 +97,10 @@ class ImagemAnimada{
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
-    this.velocity.y = 1;
+    this.velocity.y += 0.2;
+
+    // Limita a gravidade à 4
+    this.velocity.y = Math.min(4,this.velocity.y)
     this.colidir()
   }
 }
@@ -115,7 +118,7 @@ class Personagem extends ImagemAnimada {
   pular(){
     if (this.pulando) return;
     this.pulando = true;
-    this.velocity.y -= 50;
+    this.velocity.y -= 4;
 }
   animar(){
     this.linha = this.estado;

@@ -4,7 +4,11 @@
     }
 
      .principal {
-        background-color: #D6CF84; text-align: center; margin: 80px 80px 80px 80px; padding: 5px; border-radius: 10px; } 
+        background-color: #D6CF84;
+        text-align: center;
+        margin: 80px 80px 80px 80px;
+        padding: 2em;
+        border-radius: 10px; } 
 
      h1 {
         text-align: center; color: #006400; background-color: #D6CF84;
@@ -12,6 +16,8 @@
 
      p, ol, li {
         font-size: 14pt; color: #228B22; background-color: #D6CF84;
+        text-align: justify;
+        padding: 0.5em;
     }
 
      li {

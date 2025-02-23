@@ -115,12 +115,7 @@ class ImagemAnimada extends Sprite{
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
-    // gravidade
-    // this.velocity.y += 2;
-    // if (this.position.y < canvas.height - 26) {
     this.velocity.y = 1;
-      // this.estado = 2;
-    // } else {this.velocity.y = 0}
     this.colidir()
   }
 }

@@ -52,6 +52,12 @@ class ImagemAnimada{
                       posy < element.y + element.altura;
   
       if (colidiu) {
+
+        if ([15,17, 22, 23, 24].includes(element.tile)){
+          jogo_ganho = true;
+          return;
+        }
+
         // Colisão na esquerda
         const distEsquerda = (posx + TILE_TAMANHO) - element.x;
         // Colisão na direita

@@ -1,6 +1,10 @@
 // Definir canvas e context
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+
+
+var jogo_ganho = false;
+
 // Manter pixels afiados, sem borrar
 ctx.imageSmoothingEnabled = false;
 
@@ -47,13 +51,14 @@ function loop() {
   window.requestAnimationFrame(loop);
   if (!calcularQuadro()) return
 
+  
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpar canvas
-
+  
   desenharCenario(mapa1, true);
   
   // Movimento para a direita e esquerda
   pers.velocity.x = 0
-
+  
   if(keys.d.pressed){
     pers.velocity.x = 1
     pers.estado = 1
@@ -67,9 +72,16 @@ function loop() {
   ansiedade1.update();
   ansiedade2.update();
   preguica1.update();
-
+  
   // Limpa o array de colisões
   colisoes = [];
+
+  if (jogo_ganho) {
+    ctx.font = "9px pixeloid-sans"
+    ctx.fillStyle = "#DB7157"
+    ctx.fillText("Parabéns! Você chegou ao IFBA!",32,32)
+    // return;
+  }
 }
 
 

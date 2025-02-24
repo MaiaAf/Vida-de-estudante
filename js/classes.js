@@ -1,3 +1,4 @@
+// Classe que define o básico para personagens e inimigos terem física, animação e colisão
 class ImagemAnimada{
   constructor(pos, imagem) {
     this.position = pos;
@@ -101,17 +102,20 @@ class ImagemAnimada{
     }
     this.draw();
 
+    // Movimento
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
+    // Gravidade
     this.velocity.y += 0.2;
 
     // Limita a gravidade à 4
     this.velocity.y = Math.min(4,this.velocity.y)
-    this.colidir()
+    this.colidir() //Chamar colisões
   }
 }
 
+// Classe para personagem com métodos adicionais pular, animar e morrer
 class Personagem extends ImagemAnimada {
   constructor(pos,imagem){
     super(pos,imagem);

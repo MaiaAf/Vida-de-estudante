@@ -54,6 +54,7 @@ function desenharCenario(mapa, colidir = false) {
             x: i * TILE_TAMANHO - camera.pos.x,
             y: j * TILE_TAMANHO - camera.pos.y,
             altura: tile_altura,
+            tile: tile_atual,
           })
         };
 

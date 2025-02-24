@@ -67,6 +67,7 @@ function loop() {
     pers.estado = 3
   }
   
+  // Atualizar objetos
   pers.update();
   camera.update(pers.position);
   ansiedade1.update();
@@ -76,11 +77,11 @@ function loop() {
   // Limpa o array de colisões
   colisoes = [];
 
+  // Mensagem de jogo ganho
   if (jogo_ganho) {
     ctx.font = "9px pixeloid-sans"
     ctx.fillStyle = "#DB7157"
     ctx.fillText("Parabéns! Você chegou ao IFBA!",32,32)
-    // return;
   }
 }
 

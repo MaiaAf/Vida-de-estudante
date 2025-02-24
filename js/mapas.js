@@ -73,6 +73,9 @@ function desenharCenario(mapa, colidir = false) {
   }
 }
 
+// Função que recebe dois objetos com posições e retorna se eles colidem ou não
+// De certa forma é uma redundância do método colidir de ImagemAnimada, mas para 
+// generalizar encontrei alguns problemas
 function contato(obj1,obj2) {
   let posx = obj1.position.x ;
   let posy = obj1.position.y;

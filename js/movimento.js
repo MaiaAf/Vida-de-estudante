@@ -1,3 +1,5 @@
+// Define as teclas como pressionadas ou não para o movimento
+// Usa o EventListeners keydown e keyup
 const keys = {
     d: {pressed: false,},
     a: {pressed: false,},
@@ -19,7 +21,7 @@ window.addEventListener('keydown', (event) => {
 
         case "W": 
         case "w": 
-            pers.pular();
+            pers.pular(); // pulo
         break
     }
 })

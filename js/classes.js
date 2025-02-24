@@ -42,9 +42,9 @@ class ImagemAnimada{
       // Verifica se há colisão
       let posx = this.position.x - camera.pos.x;
       let posy = this.position.y - camera.pos.y;
-      // Mostrar colisão do personagem
+      
+      // Mostrar colisão do personagem e inimigos
       // ctx.fillStyle = '#0f06';
-
       // ctx.fillRect(posx, posy, TILE_TAMANHO, TILE_TAMANHO); // Corrigido para usar TILE_TAMANHO para altura
       const colidiu = posx + TILE_TAMANHO > element.x &&
                       posx < element.x + TILE_TAMANHO &&
@@ -53,6 +53,7 @@ class ImagemAnimada{
   
       if (colidiu) {
 
+        // Se a colisão for com os blocos do IFBA, vencer o jogo e ignorar a colisão
         if ([15,17, 22, 23, 24].includes(element.tile)){
           jogo_ganho = true;
           return;
@@ -69,7 +70,8 @@ class ImagemAnimada{
   
         // Determina a menor distância para ajustar a posição
         const menorDistancia = Math.min(distEsquerda, distDireita, distCima, distBaixo);
-  
+        
+        // Se a colisão for detectada, zera a velocidade e move o objeto para fora da colisão
         if (menorDistancia === distEsquerda) {
           this.position.x = element.x - TILE_TAMANHO + camera.pos.x; // Ajusta para a esquerda
           this.velocity.x = 0;
@@ -79,7 +81,7 @@ class ImagemAnimada{
         } else if (menorDistancia === distCima) {
           this.position.y = element.y - TILE_TAMANHO + camera.pos.y; // Ajusta para cima
           this.velocity.y = 0;
-          this.pulando = false;
+          this.pulando = false; // Reseta o pulo
         } else if (menorDistancia === distBaixo) {
           this.position.y = element.y + element.altura + camera.pos.y; // Ajusta para baixo
           this.velocity.y = 0;
@@ -120,7 +122,7 @@ class Personagem extends ImagemAnimada {
   }
 
   pular(){
-    if (this.pulando) return;
+    if (this.pulando) return; // Apenas um pulo por vez
     this.pulando = true;
     this.velocity.y -= 4;
 }
@@ -166,9 +168,9 @@ class Personagem extends ImagemAnimada {
   }
 
   morrer(){
+    // Retorna o personagem para o local inicial
     this.position.x = posinicial.x - camera.pos.x;
     this.position.x = posinicial.y - camera.pos.y;
-    // this.velocity.x -= 20
     console.log("morri")
   }
 }
@@ -204,6 +206,7 @@ class Inimigo extends ImagemAnimada{
     };
   }
 
+  // Animação do inimigo
   animar(){
     this.frame_duracao = 30; // Duração do quadro em frames por segundo
     if (this.quadro_atual > this.frame_duracao) this.quadro_atual = 0;
@@ -216,17 +219,6 @@ class Inimigo extends ImagemAnimada{
     this.quadro_atual++;
   }
 
-  atacar(){
-    const colidiu = pers.posx + TILE_TAMANHO > this.pos.x &&
-    pers.posx < this.pos.x + TILE_TAMANHO &&
-    pers.posy + TILE_TAMANHO > this.pos.y &&
-    pers.posy < this.pos.y + 16;
-  }
-
-  if (colidiu) {
-    pers.morrer()
-  };
-
   update(){
     this.velocity.x = 0.1
     this.draw();
@@ -237,6 +229,7 @@ class Inimigo extends ImagemAnimada{
     this.velocity.y = 1;
     this.colidir()
 
+    // Matar o personagem se detecar contato
     if (contato(this, pers)) {
       pers.morrer();
     }
